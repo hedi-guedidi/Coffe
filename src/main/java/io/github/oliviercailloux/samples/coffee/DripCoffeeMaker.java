@@ -16,5 +16,61 @@ package io.github.oliviercailloux.samples.coffee;
  * </p>
  */
 public class DripCoffeeMaker implements CoffeeMachine {
+	private int producedCoffee;
+	private double lastCoffeeStrength;
+	
+	public static DripCoffeeMaker newInstance(){
+		return new DripCoffeeMaker();
+	}
+	private DripCoffeeMaker(int producedCoffee,double lastCoffeeStrength){
+		this.producedCoffee=producedCoffee;
+		this.lastCoffeeStrength=lastCoffeeStrength;
+	}
+	
+	private DripCoffeeMaker() {
+		this(0,0.0);
+	}
+	
+	@Override
+	public double getMaxStrength() {
+		return 10.0;
+	}
+
+	@Override
+	public int getTimeForCoffee(double strength) {
+		if(strength >getMaxStrength() || strength<0) {
+			throw new IllegalArgumentException();
+		}
+		if(strength == 0) {
+			return 0;
+		}
+		return 120;
+	}
+
+	@Override
+	public void produceCoffee(double strength) {
+		if(strength >getMaxStrength() || strength<0) {
+			throw new IllegalArgumentException();
+		}
+		producedCoffee++;
+		lastCoffeeStrength=strength;
+		
+	}
+
+	@Override
+	public int getNumberOfCoffeesProduced() {
+		return producedCoffee;
+	}
+
+	@Override
+	public double getEnergySpent() throws IllegalStateException {
+		if(producedCoffee==0) {
+			throw new IllegalStateException();
+		}
+		if(lastCoffeeStrength ==0) {
+			return 0;
+		}
+		return 83.0;
+	}
 
 }
